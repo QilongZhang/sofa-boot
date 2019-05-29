@@ -16,6 +16,7 @@
  */
 package com.alipay.sofa.runtime.integration;
 
+import com.alipay.sofa.healthcheck.startup.ReadinessCheckListener;
 import com.alipay.sofa.runtime.api.component.ComponentName;
 import com.alipay.sofa.runtime.service.binding.JvmBinding;
 import com.alipay.sofa.runtime.service.component.ReferenceComponent;
@@ -77,6 +78,9 @@ public class IntegrationTest extends AbstractTestBase {
 
         ApplicationContext context = awareTest.getApplicationContext();
         Assert.assertNotNull(context.getBean("sofaComponentHealthChecker"));
+
+        ReadinessCheckListener readinessCheckListener = (ReadinessCheckListener)context.getBean("readinessCheckListener");
+        Assert.assertTrue(readinessCheckListener.getHealthIndicatorStatus());
 
         HealthChecker healthChecker = (HealthChecker) context.getBean("sofaComponentHealthChecker");
         Assert.assertTrue(healthChecker.isHealthy().getStatus().equals(Status.UP));
